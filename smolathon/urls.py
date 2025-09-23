@@ -20,6 +20,21 @@ from rest_framework.routers import DefaultRouter
 from apps.trafficlights.views import TrafficLightViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import JsonResponse
+from rest_framework import routers
+from apps.trafficlights.views import TrafficLightViewSet
+from apps.fines.views import FineViewSet
+from apps.evacuations.views import EvacuationViewSet
+from apps.analytics.views import MetricViewSet
+from apps.projects.views import ProjectViewSet
+from apps.notifications.views import NotificationViewSet
+
+router = routers.DefaultRouter()
+router.register(r'traffic-lights', TrafficLightViewSet)
+router.register(r'fines', FineViewSet)
+router.register(r'evacuations', EvacuationViewSet)
+router.register(r'metrics', MetricViewSet)
+router.register(r'projects', ProjectViewSet)
+router.register(r'notifications', NotificationViewSet)
 
 def home(request):
     return JsonResponse({"message": "Welcome to TestTask-Backend!"})
