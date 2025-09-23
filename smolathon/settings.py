@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.analytics',
     'apps.projects',
     'apps.notifications',
+    'apps.accidents',
 ]
 
 REST_FRAMEWORK = {
