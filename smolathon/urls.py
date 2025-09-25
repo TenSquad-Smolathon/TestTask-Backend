@@ -58,9 +58,8 @@ urlpatterns = [
 
     # Всё, что зарегистрировано в роутере DRF
     path('api/', include(router.urls)),
-    path('api/token/', ...),
-    path('api/content/', include('apps.content.urls')),
-    path('api/users/', include('apps.users.urls')),
-    path('api/traffic-lights/', include('apps.trafficlights.urls')),
-    path('api/', include('apps.accidents.urls')),
+    # path('api/content/', include('apps.content.urls')),
+    # path('api/users/', include('apps.users.urls')),
+    # path('api/traffic-lights/', include('apps.trafficlights.urls')),
+    # path('api/', include('apps.accidents.urls')),
 ]
