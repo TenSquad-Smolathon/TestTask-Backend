@@ -1,43 +1,43 @@
 from django.db import models
 
 class Service(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Название")
-    short_desc = models.CharField(max_length=500, verbose_name="Краткое описание")
-    desc = models.TextField(verbose_name="Полное описание")
-    inputs = models.TextField(
-        verbose_name="Поля для ввода (через запятую)",
-        help_text="На клиент отдаём как список"
-    )
-    action_text = models.CharField(max_length=255, verbose_name="Текст кнопки действия")
+    title = models.CharField(max_length=255)
+    short_desc = models.CharField(max_length=500)
+    desc = models.TextField()
+    inputs = models.TextField(help_text="Список значений через запятую")
+    action_text = models.CharField(max_length=255)
 
-    def str(self):
+    def get_inputs_list(self):
+        return [i.strip() for i in self.inputs.split(',') if i.strip()]
+
+    def __str__(self):
         return self.title
 
 
 class TeamMember(models.Model):
-    name = models.CharField(max_length=255, verbose_name="Имя")
-    surname = models.CharField(max_length=255, verbose_name="Фамилия")
-    role = models.CharField(max_length=255, verbose_name="Роль в команде")
+    name = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
+    role = models.CharField(max_length=255)
 
-    def str(self):
-        return f"{self.name} {self.surname} — {self.role}"
+    def __str__(self):
+        return f"{self.name} {self.surname}"
 
 
 class Vacancy(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Название вакансии")
-    description = models.TextField(verbose_name="Описание")
-    requirements = models.TextField(verbose_name="Требования")
-    payout = models.CharField(max_length=255, verbose_name="Оплата")
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    requirements = models.TextField()
+    payout = models.CharField(max_length=255)
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=255, verbose_name="Название/имя")
-    phone = models.CharField(max_length=50, null=True, blank=True, verbose_name="Телефон")
-    email = models.EmailField(null=True, blank=True, verbose_name="Email")
-    image_path = models.CharField(max_length=500, verbose_name="Путь к изображению")
+    name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=50, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    image_path = models.CharField(max_length=500, null=True, blank=True)
 
-    def str(self):
+    def __str__(self):
         return self.name
