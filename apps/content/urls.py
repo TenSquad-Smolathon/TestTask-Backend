@@ -1,18 +1,10 @@
-from rest_framework import routers
-from django.urls import path, include
-from .views import ServiceViewSet, TeamMemberViewSet
+from rest_framework.routers import DefaultRouter
+from .views import ServiceViewSet, TeamMemberViewSet, VacancyViewSet, ContactViewSet
 
-# Создаём роутер
-router = routers.DefaultRouter()
+router = DefaultRouter()
+router.register(r'services', ServiceViewSet)
+router.register(r'team', TeamMemberViewSet)
+router.register(r'vacancies', VacancyViewSet)
+router.register(r'contacts', ContactViewSet)
 
-# Регистрируем ViewSet'ы с уникальными basename
-router.register(r'services', ServiceViewSet, basename='service')        # URL: /services/
-router.register(r'team-members', TeamMemberViewSet, basename='teammember')  # URL: /team-members/
-
-# Если будут ещё ViewSet'ы, регистрируйте их аналогично:
-# router.register(r/путь/, ViewSetКласс, basename='уникальное_имя')
-
-# Подключаем роутер к URLconf
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = router.urls

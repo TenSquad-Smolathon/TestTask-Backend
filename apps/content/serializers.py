@@ -8,37 +8,37 @@ class ServiceSerializer(serializers.ModelSerializer):
         source='inputs_as_list'
     )
 
-    class Meta:
+class Meta:
         model = Service
         fields = '__all__'
 
-    def to_representation(self, instance):
+def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['inputs'] = instance.inputs.split(',') if instance.inputs else []
         return ret
 
-    def create(self, validated_data):
+def create(self, validated_data):
             # inputs приходит как список — конвертим в строку
             inputs = self.initial_data.get('inputs', [])
             validated_data['inputs'] = ','.join(inputs)
             return super().create(validated_data)
 
-    def update(self, instance, validated_data):
+def update(self, instance, validated_data):
             inputs = self.initial_data.get('inputs', [])
             validated_data['inputs'] = ','.join(inputs)
             return super().update(instance, validated_data)
 
-    class TeamMemberSerializer(serializers.ModelSerializer):
+class TeamMemberSerializer(serializers.ModelSerializer):
         class Meta:
             model = TeamMember
             fields = '__all__'
 
-    class VacancySerializer(serializers.ModelSerializer):
+class VacancySerializer(serializers.ModelSerializer):
         class Meta:
             model = Vacancy
             fields = '__all__'
 
-    class ContactSerializer(serializers.ModelSerializer):
+class ContactSerializer(serializers.ModelSerializer):
         class Meta:
             model = Contact
             fields = '__all__'
