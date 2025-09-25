@@ -26,15 +26,18 @@ from apps.fines.views import FineViewSet
 from apps.evacuations.views import EvacuationViewSet
 from apps.analytics.views import MetricViewSet
 from apps.projects.views import ProjectViewSet
+from apps.accidents.views import AccidentViewSet
 from apps.notifications.views import NotificationViewSet
 
-router = routers.DefaultRouter()
-router.register(r'traffic-lights', TrafficLightViewSet)
-router.register(r'fines', FineViewSet)
-router.register(r'evacuations', EvacuationViewSet)
-router.register(r'metrics', MetricViewSet)
-router.register(r'projects', ProjectViewSet)
-router.register(r'notifications', NotificationViewSet)
+router = DefaultRouter()
+router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
+router.register(r'fines', FineViewSet, basename='fine')
+router.register(r'evacuations', EvacuationViewSet, basename='evacuation')
+router.register(r'metrics', MetricViewSet, basename='metric')
+router.register(r'projects', ProjectViewSet, basename='project')
+router.register(r'notifications', NotificationViewSet, basename='notification')
+router.register(r'accidents', AccidentViewSet, basename='accident')
+# Если нужно, сюда же можно добавить services, team, vacancies, contacts
 
 def home(request):
     return JsonResponse({"message": "Welcome to TestTask-Backend!"})
@@ -43,12 +46,17 @@ router = DefaultRouter()
 router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
 
 urlpatterns = [
-    path('', home),  # <- корень сайта
+    path('', home),  # корень сайта
     path('admin/', admin.site.urls),
+
+    # JWT токены
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/content/', include('apps.content.urls')),
-    path('api/users/', include('apps.users.urls')),
-    path('api/', include('apps.accidents.urls')),
+
+    # Подключаем свои внутренние url’ы, если они есть
+    path('api/content/', include('apps.content.urls')),  # если сделал отдельный urls.py
+    path('api/users/', include('apps.users.urls')),      # если сделал отдельный urls.py
+
+    # Всё, что зарегистрировано в роутере DRF
     path('api/', include(router.urls)),
 ]
