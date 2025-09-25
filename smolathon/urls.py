@@ -21,7 +21,6 @@ from apps.trafficlights.views import TrafficLightViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import JsonResponse
 from rest_framework import routers
-from apps.trafficlights.views import TrafficLightViewSet
 from apps.fines.views import FineViewSet
 from apps.evacuations.views import EvacuationViewSet
 from apps.analytics.views import MetricViewSet
@@ -59,4 +58,9 @@ urlpatterns = [
 
     # Всё, что зарегистрировано в роутере DRF
     path('api/', include(router.urls)),
+    path('api/token/', ...),
+    path('api/content/', include('apps.content.urls')),
+    path('api/users/', include('apps.users.urls')),
+    path('api/traffic-lights/', include('apps.trafficlights.urls')),
+    path('api/', include('apps.accidents.urls')),
 ]
