@@ -16,50 +16,41 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from apps.trafficlights.views import TrafficLightViewSet
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import JsonResponse
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from apps.trafficlights.views import TrafficLightViewSet
 from apps.fines.views import FineViewSet
 from apps.evacuations.views import EvacuationViewSet
 from apps.analytics.views import MetricViewSet
 from apps.projects.views import ProjectViewSet
-from apps.accidents.views import AccidentViewSet
 from apps.notifications.views import NotificationViewSet
 
-router = DefaultRouter()
+
+# домашняя страница
+def home(request):
+    return JsonResponse({"message": "Welcome to TestTask-Backend!"})
+
+
+# основной router для всего API
+router = routers.DefaultRouter()
 router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
 router.register(r'fines', FineViewSet, basename='fine')
 router.register(r'evacuations', EvacuationViewSet, basename='evacuation')
 router.register(r'metrics', MetricViewSet, basename='metric')
 router.register(r'projects', ProjectViewSet, basename='project')
 router.register(r'notifications', NotificationViewSet, basename='notification')
-router.register(r'accidents', AccidentViewSet, basename='accident')
-# Если нужно, сюда же можно добавить services, team, vacancies, contacts
 
-def home(request):
-    return JsonResponse({"message": "Welcome to TestTask-Backend!"})
-
-router = DefaultRouter()
-router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
-
+# подключение всех URL
 urlpatterns = [
     path('', home),  # корень сайта
     path('admin/', admin.site.urls),
-
-    # JWT токены
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Подключаем свои внутренние url’ы, если они есть
-    path('api/content/', include('apps.content.urls')),  # если сделал отдельный urls.py
-    path('api/users/', include('apps.users.urls')),      # если сделал отдельный urls.py
-
-    # Всё, что зарегистрировано в роутере DRF
-    path('api/', include(router.urls)),
-    # path('api/content/', include('apps.content.urls')),
-    # path('api/users/', include('apps.users.urls')),
-    # path('api/traffic-lights/', include('apps.trafficlights.urls')),
-    # path('api/', include('apps.accidents.urls')),
+    path('api/content/', include('apps.content.urls')),
+    path('api/users/', include('apps.users.urls')),
+    path('api/accidents/', include('apps.accidents.urls')),  # отдельный модуль accidents
+    path('api/', include(router.urls)),  # все зарегистрированные ViewSet’ы
 ]
