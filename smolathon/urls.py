@@ -19,13 +19,14 @@ from django.urls import path, include
 from django.http import JsonResponse
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
+from apps.content.views import TablesInfoView
 from apps.trafficlights.views import TrafficLightViewSet
 from apps.fines.views import FineViewSet
 from apps.evacuations.views import EvacuationViewSet
 from apps.analytics.views import MetricViewSet
 from apps.projects.views import ProjectViewSet
 from apps.notifications.views import NotificationViewSet
+from apps.accidents.views import AccidentViewSet
 
 
 # домашняя страница
@@ -41,16 +42,16 @@ router.register(r'evacuations', EvacuationViewSet, basename='evacuation')
 router.register(r'metrics', MetricViewSet, basename='metric')
 router.register(r'projects', ProjectViewSet, basename='project')
 router.register(r'notifications', NotificationViewSet, basename='notification')
+router.register(r'accidents', AccidentViewSet, basename='accident')
 
 # подключение всех URL
 urlpatterns = [
     path('', home),  # корень сайта
     path('admin/', admin.site.urls),
+    path('tables/', TablesInfoView.as_view(), name='tables-info'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     path('api/content/', include('apps.content.urls')),
     path('api/users/', include('apps.users.urls')),
-    path('api/accidents/', include('apps.accidents.urls')),  # отдельный модуль accidents
     path('api/', include(router.urls)),  # все зарегистрированные ViewSet’ы
 ]

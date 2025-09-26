@@ -2,9 +2,10 @@ from django.db import models
 
 class Service(models.Model):
     title = models.CharField(max_length=255)
-    short_desc = models.CharField(max_length=500)
-    desc = models.TextField()
-    inputs = models.TextField(help_text="Список значений через запятую")
+    short_desc = models.CharField(max_length=255)
+    desc = models.TextField()  # краткое описание
+    text = models.TextField()  # развёрнутый текст
+    inputs = models.CharField(max_length=255)  # значения через запятую
     action_text = models.CharField(max_length=255)
 
     def get_inputs_list(self):
