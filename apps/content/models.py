@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Service(models.Model):
     title = models.CharField(max_length=255)
@@ -65,3 +66,29 @@ class Document(models.Model):
     
     def __str__(self):
         return self.name
+
+class ServiceRequest(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='service_requests'
+    )
+    service = models.ForeignKey(
+        'Service',
+        on_delete=models.CASCADE,
+        related_name='requests'
+    )
+    description = models.TextField(blank=True, null=True)  # комментарий юзера
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('new', 'Новая'),
+            ('in_progress', 'В работе'),
+            ('done', 'Выполнена')
+        ],
+        default='new'
+    )
+
+    def __str__(self):
+        return f"{self.user} → {self.service} ({self.status})"

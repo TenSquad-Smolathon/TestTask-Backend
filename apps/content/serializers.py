@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Service, TeamMember, Vacancy, Contact, New, Article, Document
+from .models import Service, TeamMember, Vacancy, Contact, New, Article, Document, ServiceRequest
+
+class ServiceRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceRequest
+        fields = 'all'
+        read_only_fields = ('user', 'created_at')
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
