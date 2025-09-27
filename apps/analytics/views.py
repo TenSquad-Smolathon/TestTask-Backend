@@ -94,9 +94,9 @@ class StatsViewSet(APIView):
         fines_data_map__average_amount = {}
         fines_data_fields__average_amount = set()
         for item in fines:
-            year = item["year"] = item["year"].strftime("%Y")
-            month = item["month"] = item["month"].strftime("%m")
-
+            year = item["year"]
+            month = item["month"]
+            
             fines_data_fields__average_amount.add(year)
 
             if month not in fines_data_map__average_amount:
@@ -109,8 +109,8 @@ class StatsViewSet(APIView):
         fines_data_map__total_amount = {}
         fines_data_fields__total_amount = set()
         for item in fines:
-            year = item["year"] = item["year"].strftime("%Y")
-            month = item["month"] = item["month"].strftime("%m")
+            year = item["year"] = item["year"]
+            month = item["month"] = item["month"]
 
             fines_data_fields__total_amount.add(year)
 
@@ -347,7 +347,7 @@ class StatsViewSet(APIView):
                 average_amount=Avg("amount"),
                 total_amount=Sum("amount"),
             )
-            .order_by("-year", "-month")
+            .order_by("year", "month")
         )
 
         return fines_stats
@@ -360,7 +360,7 @@ class StatsViewSet(APIView):
             )
             .values("year", "month")
             .annotate(total_count=Count("id"))
-            .order_by("-year", "-month")
+            .order_by("year", "month")
         )
 
         return evacuations_stats
@@ -371,7 +371,7 @@ class StatsViewSet(APIView):
             .annotate(year=TruncYear("install_date"), month=TruncMonth("install_date"))
             .values("year", "month")
             .annotate(total_count=Count("id"))
-            .order_by("-year", "-month")
+            .order_by("year", "month")
         )
 
         return trafficlights_stats
@@ -383,7 +383,7 @@ class StatsViewSet(APIView):
             )
             .values("year", "month", "type")
             .annotate(total_count=Count("id"))
-            .order_by("-year", "-month")
+            .order_by("year", "month")
         )
 
         return trafficlights_stats_type
@@ -422,7 +422,7 @@ class StatsViewSet(APIView):
             )
             .values("year", "month")
             .annotate(total_count=Count("id"))
-            .order_by("-year", "-month")
+            .order_by("year", "month")
         )
 
         return accidents_stats
