@@ -5,12 +5,12 @@ class ServiceSerializer(serializers.ModelSerializer):
     # inputs с клиента/клиенту — список
     inputs = serializers.ListField(
         child=serializers.CharField(),
-        source='inputs_as_list'
+        source='inputs_as_list'  # этот property мы сделали в модели Service
     )
 
-class Meta:
+    class Meta:  # <--- ЭТОТ БЛОК ОБЯЗАТЕЛЕН
         model = Service
-        fields = '__all__'
+        fields = ['id', 'title', 'short_desc', 'desc', 'text', 'inputs', 'action_text']
 
 def to_representation(self, instance):
         ret = super().to_representation(instance)
