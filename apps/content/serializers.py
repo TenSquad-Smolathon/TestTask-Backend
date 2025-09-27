@@ -4,7 +4,7 @@ from .models import Service, TeamMember, Vacancy, Contact, New, Article, Documen
 class ServiceRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceRequest
-        fields = 'all'
+        fields = '__all__'
         read_only_fields = ('user', 'created_at')
 
 class ServiceSerializer(serializers.ModelSerializer):
