@@ -14,6 +14,22 @@ from .serializers import (
 from django.db import connection
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import viewsets, permissions
+from .models import ServiceRequest
+from .serializers import ServiceRequestSerializer
+
+class ServiceRequestViewSet(viewsets.ModelViewSet):
+    serializer_class = ServiceRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_admin():  # админ видит все заявки
+            return ServiceRequest.objects.all()
+        return ServiceRequest.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
