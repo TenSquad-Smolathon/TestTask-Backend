@@ -24,13 +24,11 @@ class ServiceRequestViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        try:
-            if user.is_admin():  # админ видит все заявки
-                return ServiceRequest.objects.all()
-        except:
-            return []
-        
-        return []
+        if user.is_authenticated and getattr(user, 'is_admin', False):  # админ видит все заявки
+            return ServiceRequest.objects.all()
+        else:
+            pass
+        return ServiceRequest.objects.filter(user=user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
