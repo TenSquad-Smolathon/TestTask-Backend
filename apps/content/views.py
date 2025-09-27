@@ -1,12 +1,15 @@
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
-from .models import Service, TeamMember, Vacancy, Contact
+from .models import Service, TeamMember, Vacancy, Contact, New, Article, Document
 from .serializers import (
     ServiceSerializer,
     TeamMemberSerializer,
     VacancySerializer,
-    ContactSerializer
+    ContactSerializer,
+    NewSerializer,
+    ArticleSerializer,
+    DocumentSerializer
 )
 from django.db import connection
 from rest_framework.views import APIView
@@ -30,7 +33,18 @@ class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = New.objects.all()
+    serializer_class = NewSerializer
 
+class ArticlesViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    
+class DocumentsViewSet(viewsets.ModelViewSet):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+    
 class TablesInfoView(APIView):
     def get(self, request):
         data = {}

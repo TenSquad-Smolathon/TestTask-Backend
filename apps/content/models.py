@@ -42,3 +42,26 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+    
+class New(models.Model):
+    name = models.CharField(max_length=255)
+    short_desc = models.CharField(max_length=1024)
+    text = models.TextField()
+    
+    def __str__(self):
+        return self.name
+    
+class Article(models.Model):
+    name = models.CharField(max_length=255)
+    short_desc = models.CharField(max_length=1024)
+    text = models.TextField()
+    
+    def __str__(self):
+        return self.name
+    
+class Document(models.Model):
+    name = models.CharField(max_length=255)
+    link = models.CharField(max_length=255 * 2)
+    
+    def __str__(self):
+        return self.name

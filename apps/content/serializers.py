@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Service, TeamMember, Vacancy, Contact
+from .models import Service, TeamMember, Vacancy, Contact, New, Article, Document
 
 class ServiceSerializer(serializers.ModelSerializer):
     # inputs с клиента/клиенту — список
@@ -41,4 +41,19 @@ class VacancySerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
         class Meta:
             model = Contact
+            fields = '__all__'
+            
+class NewSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = New
+            fields = '__all__'
+            
+class ArticleSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Article
+            fields = '__all__'
+            
+class DocumentSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Document
             fields = '__all__'

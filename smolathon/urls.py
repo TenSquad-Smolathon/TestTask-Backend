@@ -27,6 +27,7 @@ from apps.analytics.views import MetricViewSet
 from apps.projects.views import ProjectViewSet
 from apps.notifications.views import NotificationViewSet
 from apps.accidents.views import AccidentViewSet
+from apps.analytics.views import StatsViewSet
 
 
 # домашняя страница
@@ -51,7 +52,9 @@ urlpatterns = [
     path('tables/', TablesInfoView.as_view(), name='tables-info'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/analytics/stats', StatsViewSet.as_view(), name='stats'),
     path('api/content/', include('apps.content.urls')),
     path('api/users/', include('apps.users.urls')),
+    # path('api/analytics/', include('apps.analytics.urls')),
     path('api/', include(router.urls)),  # все зарегистрированные ViewSet’ы
 ]
