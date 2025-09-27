@@ -2,13 +2,7 @@ from rest_framework import serializers
 from .models import Service, TeamMember, Vacancy, Contact, New, Article, Document
 
 class ServiceSerializer(serializers.ModelSerializer):
-    # inputs с клиента/клиенту — список
-    inputs = serializers.ListField(
-        child=serializers.CharField(),
-        source='inputs_as_list'  # этот property мы сделали в модели Service
-    )
-
-    class Meta:  # <--- ЭТОТ БЛОК ОБЯЗАТЕЛЕН
+    class Meta:
         model = Service
         fields = ['id', 'title', 'short_desc', 'desc', 'text', 'inputs', 'action_text']
 
