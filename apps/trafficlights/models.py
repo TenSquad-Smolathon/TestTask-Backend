@@ -5,7 +5,7 @@ class TrafficLight(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     type = models.CharField(max_length=100)
-    install_date = models.DateField(null=True, blank=True)
+    install_date = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=50, default='operational')
     is_public = models.BooleanField(default=True)
 

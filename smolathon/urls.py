@@ -16,37 +16,45 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from apps.trafficlights.views import TrafficLightViewSet
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import JsonResponse
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from apps.content.views import TablesInfoView
 from apps.trafficlights.views import TrafficLightViewSet
 from apps.fines.views import FineViewSet
 from apps.evacuations.views import EvacuationViewSet
 from apps.analytics.views import MetricViewSet
 from apps.projects.views import ProjectViewSet
 from apps.notifications.views import NotificationViewSet
+from apps.accidents.views import AccidentViewSet
+from apps.analytics.views import StatsViewSet
 
-router = routers.DefaultRouter()
-router.register(r'traffic-lights', TrafficLightViewSet)
-router.register(r'fines', FineViewSet)
-router.register(r'evacuations', EvacuationViewSet)
-router.register(r'metrics', MetricViewSet)
-router.register(r'projects', ProjectViewSet)
-router.register(r'notifications', NotificationViewSet)
 
+# домашняя страница
 def home(request):
     return JsonResponse({"message": "Welcome to TestTask-Backend!"})
 
-router = DefaultRouter()
-router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
 
+# основной router для всего API
+router = routers.DefaultRouter()
+router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
+router.register(r'fines', FineViewSet, basename='fine')
+router.register(r'evacuations', EvacuationViewSet, basename='evacuation')
+router.register(r'metrics', MetricViewSet, basename='metric')
+router.register(r'projects', ProjectViewSet, basename='project')
+router.register(r'notifications', NotificationViewSet, basename='notification')
+router.register(r'accidents', AccidentViewSet, basename='accident')
+
+# подключение всех URL
 urlpatterns = [
-    path('', home),  # <- корень сайта
+    path('', home),  # корень сайта
     path('admin/', admin.site.urls),
+    path('tables/', TablesInfoView.as_view(), name='tables-info'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include('apps.accidents.urls')),
-    path('api/', include(router.urls)),
+    path('api/analytics/stats', StatsViewSet.as_view(), name='stats'),
+    path('api/content/', include('apps.content.urls')),
+    path('api/users/', include('apps.users.urls')),
+    # path('api/analytics/', include('apps.analytics.urls')),
+    path('api/', include(router.urls)),  # все зарегистрированные ViewSet’ы
 ]
