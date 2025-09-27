@@ -68,11 +68,6 @@ class Document(models.Model):
         return self.name
 
 class ServiceRequest(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='service_requests'
-    )
     service = models.ForeignKey(
         'Service',
         on_delete=models.CASCADE,
