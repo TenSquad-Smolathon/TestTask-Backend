@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
@@ -28,6 +29,7 @@ from apps.projects.views import ProjectViewSet
 from apps.notifications.views import NotificationViewSet
 from apps.accidents.views import AccidentViewSet
 from apps.analytics.views import StatsViewSet
+from apps.clusterization.views import ClustersViewSet
 
 
 # домашняя страница
@@ -37,24 +39,25 @@ def home(request):
 
 # основной router для всего API
 router = routers.DefaultRouter()
-router.register(r'traffic-lights', TrafficLightViewSet, basename='trafficlight')
-router.register(r'fines', FineViewSet, basename='fine')
-router.register(r'evacuations', EvacuationViewSet, basename='evacuation')
-router.register(r'metrics', MetricViewSet, basename='metric')
-router.register(r'projects', ProjectViewSet, basename='project')
-router.register(r'notifications', NotificationViewSet, basename='notification')
-router.register(r'accidents', AccidentViewSet, basename='accident')
+router.register(r"traffic-lights", TrafficLightViewSet, basename="trafficlight")
+router.register(r"fines", FineViewSet, basename="fine")
+router.register(r"evacuations", EvacuationViewSet, basename="evacuation")
+router.register(r"metrics", MetricViewSet, basename="metric")
+router.register(r"projects", ProjectViewSet, basename="project")
+router.register(r"notifications", NotificationViewSet, basename="notification")
+router.register(r"accidents", AccidentViewSet, basename="accident")
 
 # подключение всех URL
 urlpatterns = [
-    path('', home),  # корень сайта
-    path('admin/', admin.site.urls),
-    path('tables/', TablesInfoView.as_view(), name='tables-info'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/analytics/stats', StatsViewSet.as_view(), name='stats'),
-    path('api/content/', include('apps.content.urls')),
-    path('api/users/', include('apps.users.urls')),
+    path("", home),  # корень сайта
+    path("admin/", admin.site.urls),
+    path("tables/", TablesInfoView.as_view(), name="tables-info"),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/analytics/stats", StatsViewSet.as_view(), name="stats"),
+    path("api/clusters/", ClustersViewSet.as_view(), name="clusters"),
+    path("api/content/", include("apps.content.urls")),
+    path("api/users/", include("apps.users.urls")),
     # path('api/analytics/', include('apps.analytics.urls')),
-    path('api/', include(router.urls)),  # все зарегистрированные ViewSet’ы
+    path("api/", include(router.urls)),  # все зарегистрированные ViewSet’ы
 ]
